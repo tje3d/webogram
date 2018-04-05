@@ -767,6 +767,14 @@ angular.module('myApp.services')
     }
 
     function getSearch (peerID, query, inputFilter, maxID, limit) {
+      // Disable search
+      return new Promise(resolve => {
+        resolve({
+          count: 0,
+          history: []
+        })
+      })
+
       peerID = peerID ? parseInt(peerID) : 0
       var foundMsgs = []
       var useSearchCache = !query
