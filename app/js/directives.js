@@ -1744,6 +1744,7 @@ angular.module('myApp.directives', ['myApp.filters'])
           $scope.$emit('ui_typing')
         },
         getSendOnEnter: function () {
+          return false
           return sendOnEnter
         },
         dropdownDirective: function (element, callback) {
@@ -1960,7 +1961,7 @@ angular.module('myApp.directives', ['myApp.filters'])
         }
       }
 
-      var sendOnEnter = true
+      var sendOnEnter = false
       function updateSendSettings () {
         Storage.get('send_ctrlenter').then(function (sendOnCtrl) {
           sendOnEnter = !sendOnCtrl
