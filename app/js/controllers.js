@@ -457,6 +457,23 @@ angular.module('myApp.controllers', ['myApp.i18n'])
   .controller('AppIMController', function ($q, qSync, $scope, $location, $routeParams, $modal, $rootScope, $modalStack, MtpApiManager, AppUsersManager, AppChatsManager, AppMessagesManager, AppPeersManager, ContactsSelectService, ChangelogNotifyService, ErrorService, AppRuntimeManager, HttpsMigrateService, LayoutSwitchService, LocationParamsService, AppStickersManager) {
     $scope.$on('$routeUpdate', updateCurDialog)
 
+    // $scope.curDialog.peer
+    $(document).on('keydown', onKeyDown);
+    $scope.$on('$destroy', ()=>$(document).off('keydown', onKeyDown));
+
+    function onKeyDown(e) {
+      if (e.keyCode != 192) {
+        return;
+      }
+
+      e.preventDefault();
+
+      if (!$scope.curDialog.peer && !$('body').hasClass('modal-open')) {
+        $scope.searchClear();
+        setTimeout(()=>$scope.toggleSearch());
+      }
+    }
+
     var pendingParams = false
     var pendingAttachment = false
     $scope.$on('history_focus', function (e, peerData) {
@@ -1029,11 +1046,11 @@ angular.module('myApp.controllers', ['myApp.i18n'])
 
             if (searchMessages &&
                 $scope.searchPeer) {
-              var message = AppMessagesManager.getMessage(dialog.top_message)
-              if (message.fromID > 0) {
-                wrappedDialog.peerID = message.fromID
-                wrappedDialog.foundInHistory = true
-              }
+              // var message = AppMessagesManager.getMessage(dialog.top_message)
+              // if (message.fromID > 0) {
+              //   wrappedDialog.peerID = message.fromID
+              //   wrappedDialog.foundInHistory = true
+              // }
             }
 
             if (searchMessages) {
@@ -1904,7 +1921,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
           isChannel: isBroadcast,
           isSupergroup: isMegagroup,
           isUsualGroup: isUsualGroup
-        }, {}, { revoke: false }).then(function (data) {
+        }, {}, { revoke: true }).then(function (data) {
           AppMessagesManager.deleteMessages(selectedMessageIDs, data.revoke).then(function () {
             selectedCancel()
           })
