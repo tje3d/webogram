@@ -4649,6 +4649,7 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
     }
 
     function start () {
+      return
       if (started || Config.Navigator.mobile) {
         return
       }
